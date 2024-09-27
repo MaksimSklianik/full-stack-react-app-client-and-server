@@ -17,13 +17,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.set('view engine', 'jade');
+
 //раздавать статические файлы из папки 'uploads'
 app.use('/uploads', express.static('uploads'));
-
 app.use('/api', require('./routes/index'));
 
-if (fs.existsSync('uploads')) {
-    fs.mkdirSync('uploads');
+if (!fs.existsSync("uploads")) {
+    fs.mkdirSync("uploads");
 }
 
 

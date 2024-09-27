@@ -1,23 +1,23 @@
-const UserController={
-register:async(req,res)=>{
-    res.send("register")
-},
+const UserController = {
+    register: async (req, res) => {
+        res.send("register")
+    },
 
-login:async(req,res)=>{
-    res.send('login')
-},
+    login: async (req, res) => {
+        res.send('login')
+    },
 
-getUserById:async(req,res)=>{
-    res.send('getUserById')
-},
+    getUserById: async (req, res) => {
+        res.send('getUserById')
+    },
 
-updateUser:async(req,res)=>{
-    res.send('updateUser')
-},
+    updateUser: async (req, res) => {
+        res.send('updateUser')
+    },
 
-current:async(req,res)=>{
-    res.send('current')
-}
+    current: async (req, res) => {
+        res.send('current')
+    }
 
 };
 

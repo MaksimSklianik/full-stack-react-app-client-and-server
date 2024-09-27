@@ -5,7 +5,7 @@ const {UserController} = require('./controllers');
 
 const uploadDestination = 'uploads';
 
-// показываем где хранить файлы
+// показываем, где хранить файлы
 const storage = multer.diskStorage({
     destination: uploadDestination,
     filename: function (req, file, cd) {
@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 const uploads = multer({storage: storage});
 
 // ролторы
-router.post('/rester', UserController.register)
+router.post('/register', UserController.register)
 router.post('/login', UserController.login)
 router.get('/current', UserController.current)
 router.get('/users/:id', UserController.getUserById)
