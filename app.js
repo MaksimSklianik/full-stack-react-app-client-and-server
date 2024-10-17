@@ -4,7 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fs = require('fs');
-const cors = require('cors');
+require('dotenv').config();
+
 
 const indexRouter = require('./routes/index');
 
@@ -13,7 +14,7 @@ const app = express();
 
 // view engine setup\
 
-app.use(cors())
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
