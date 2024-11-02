@@ -1,30 +1,35 @@
-# Используем образ дистрибутив линукс Alpine с версией Node -14 Node.js
-FROM node:19.5.0-alpine
+FROM node:19.5.0-bullseye
 
+# Устанавливаем необходимые системные зависимости
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    build-essential \
+    libcairo2-dev \
+    libpango1.0-dev \
+    libjpeg-dev \
+    libgif-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
 
-# Указываем нашу рабочую дерикторию
 WORKDIR /app
 
-# Копируем package.json и package-lock.json внутрь контейнера
+# Копируем только файлы, необходимые для установки зависимостей
 COPY package*.json ./
 
-# Устанавливаем зависимости
-RUN npm install
+# Устанавливаем зависимости с явным указанием холостого запуска для canvas
+RUN npm install --build-from-source
 
-# Копируем оставшееся приложение в контейнер
-COPY . .
-
-# Устанавливаем Prisma
-RUN npm install -g prisma
+# Копируем файлы Prisma
+COPY prisma ./prisma/
 
 # Генерируем Prisma client
-RUN prisma generate
+RUN npx prisma generate
 
-# Копируем Prisma schema и URL базы данных в контейнер
-COPY prisma/schema.prisma ./prisma/
+# Копируем остальные файлы проекта
+COPY . .
 
-# Открываем порт 3000 в нашем контейнере
 EXPOSE 3000
 
-# Запускаем сервер
+# Запускаем приложение
 CMD [ "npm", "start" ]
