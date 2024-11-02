@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const {prisma} = require("../../prisma/prisma-client");
 const fs = require('fs')
 const jdenticon = require("jdenticon");
-const {error} = require("console");
+
 
 const UserController = {
     register: async (req, res) => {
@@ -16,7 +16,7 @@ const UserController = {
         }
 
         try {
-            // Проверяем, существует ли пользователь с таким emai
+            // Проверяем, существует ли пользователь с таким email
             const existingUser = await prisma.user.findUnique({where: {email}});
             if (existingUser) {
                 return res.status(400).json({error: "Пользователь уже существует"});
@@ -26,14 +26,11 @@ const UserController = {
             const hashedPassword = await bcrypt.hash(password, 10);
 
 
-            let size = 200;
-            let value = "name ";
-
             // Генерируем аватар для нового пользователя
-            const png = jdenticon.toPng(value, size);
-            const avatarName = `${name}${Date.now()}.png`;
+            const jpg = jdenticon.toPng(name, 200);
+            const avatarName = `${name}_${Date.now()}.jpg`;
             const avatarPath = path.join(avatarName, '/../uploads', avatarName);
-            fs.writeFileSync(avatarPath, png);
+            fs.writeFileSync(avatarPath, jpg);
 
 
             // Создаем пользователя
@@ -42,7 +39,7 @@ const UserController = {
                     email,
                     password: hashedPassword,
                     name,
-                    avatarUrl: `/../uploads ${avatarName}`,
+                    avatarUrl: `/uploads/${avatarName}`,
                 },
             });
             res.json(user);
